@@ -9,6 +9,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 from src.feature_engineering import preprocess_data
 
+filepath = r"athlete_mlflow\data\collegiate_athlete_injury_dataset.csv"
+
 def log_parameters(model, model_name):
     if model_name == "Logistic Regression":
         mlflow.log_param("max_iter", model.max_iter)
@@ -86,7 +88,4 @@ def main(filepath):
     for model_name, model in models.items():
         log_and_train_model(model, model_name, X_train, X_test, y_train, y_test, experiment_id)
 
-
-if __name__ == "__main__":
-    mlflow.set_tracking_uri("http://localhost:7000") 
-    main("data/collegiate_athlete_injury_dataset.csv")
+mlflow.set_tracking_uri("http://localhost:7003") 
