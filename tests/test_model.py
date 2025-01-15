@@ -4,6 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from src.feature_engineering import preprocess_data
+import pandas as pd
 
 FILEPATH = "data/collegiate_athlete_injury_dataset.csv"
 TARGET_COLUMN = "Injury_Indicator"  
