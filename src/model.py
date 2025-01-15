@@ -9,12 +9,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 from src.feature_engineering import preprocess_data
 
-filepath = r"athlete_mlflow\data\collegiate_athlete_injury_dataset.csv"
-
 def log_parameters(model, model_name):
     if model_name == "Logistic Regression":
         mlflow.log_param("max_iter", model.max_iter)
-        mlflow.log_param("solver", model.solver if hasattr(model, "solver") else "default")
     elif model_name == "Random Forest":
         mlflow.log_param("n_estimators", model.n_estimators)
         mlflow.log_param("max_depth", model.max_depth)
@@ -30,7 +27,7 @@ def log_parameters(model, model_name):
 
 def plot_confusion_matrix(y_test, y_pred, model_name):
     cm = confusion_matrix(y_test, y_pred)
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Not Injured", "Injured"],
                 yticklabels=["Not Injured", "Injured"])
     plt.xlabel("Predicted")
@@ -46,28 +43,22 @@ def log_and_train_model(model, model_name, X_train, y_train, X_test, y_test, exp
     y_pred = model.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, average='weighted')
+    precision = precision_score(y_test, y_pred, average='weighted', zero_division=0)
     recall = recall_score(y_test, y_pred, average='weighted', zero_division=0)
 
     with mlflow.start_run(experiment_id=experiment_id, run_name=model_name):
         mlflow.log_param("model_name", model_name)
         log_parameters(model, model_name)
-
         mlflow.log_metric("accuracy", accuracy)
         mlflow.log_metric("precision", precision)
         mlflow.log_metric("recall", recall)
-
         plot_confusion_matrix(y_test, y_pred, model_name)
-
         mlflow.sklearn.log_model(model, model_name)
 
         print(f"Model {model_name} logged to MLflow with accuracy: {accuracy:.4f}")
 
 def main(filepath):
-    df = preprocess_data(filepath)
-    target_column = "Injury_Indicator" 
-    X = df.drop(columns=[target_column])
-    y = df[target_column]
+    X, y = preprocess_data(filepath)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
@@ -77,7 +68,6 @@ def main(filepath):
     except:
         experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
 
-    # create a dictionary of models used
     models = {
         "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42),
         "Random Forest": RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42),
@@ -86,6 +76,9 @@ def main(filepath):
     }
 
     for model_name, model in models.items():
-        log_and_train_model(model, model_name, X_train, X_test, y_train, y_test, experiment_id)
+        log_and_train_model(model, model_name, X_train, y_train, X_test, y_test, experiment_id)
 
-mlflow.set_tracking_uri("http://localhost:7003") 
+if __name__ == "__main__":
+    mlflow.set_tracking_uri("http://localhost:5000")
+    filepath = r"C:\Users\sanket.upadhyay\Desktop\githubaction\athlete_mlflow\data\collegiate_athlete_injury_dataset.csv"
+    main(filepath)

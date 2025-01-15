@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/255360259713386399/27ba8c21b9ee41188435da7d35ce9bfc/artifacts
+end_time: 1736920811537
+entry_point_name: ''
+experiment_id: '255360259713386399'
+lifecycle_stage: active
+run_id: 27ba8c21b9ee41188435da7d35ce9bfc
+run_name: Random Forest
+run_uuid: 27ba8c21b9ee41188435da7d35ce9bfc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736920791785
+status: 3
+tags: []
+user_id: sanket.upadhyay

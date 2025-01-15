@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/255360259713386399/ca4ee9bd9b5846d0b7ef376267360ee6/artifacts
+end_time: 1736920835441
+entry_point_name: ''
+experiment_id: '255360259713386399'
+lifecycle_stage: active
+run_id: ca4ee9bd9b5846d0b7ef376267360ee6
+run_name: Decision Tree
+run_uuid: ca4ee9bd9b5846d0b7ef376267360ee6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736920811885
+status: 3
+tags: []
+user_id: sanket.upadhyay
